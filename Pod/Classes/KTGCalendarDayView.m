@@ -8,8 +8,12 @@
 
 #import "KTGCalendarDayView.h"
 #import "KTGHourMarkerView.h"
+#import "KTGCalendarEventView.h"
 
 @implementation KTGCalendarDayView
+
+#define HOUR_MARKER_HEADER 10.f
+#define HOUR_VIEW_MARGIN 1.0f
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -25,8 +29,10 @@
         [self addSubview:self.scrollView];
         
         self.hourMarkers = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 24.0 * self.hourHeight)];
-        
         [self.scrollView addSubview:self.hourMarkers];
+        
+        self.eventsContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 24.0 * self.hourHeight)];
+        [self.scrollView addSubview:self.eventsContainer];
         
         NSDateFormatter* hourFormatter = [[NSDateFormatter alloc] init];
         hourFormatter.dateFormat = @"hh";
@@ -42,7 +48,7 @@
                 hourTitle = [NSString stringWithFormat:@"%d", i%12];
             }
             
-            KTGHourMarkerView* hourMarkerView = [[KTGHourMarkerView alloc] initWithFrame:CGRectMake(0, i*self.hourHeight, 320, self.hourHeight) title:hourTitle];
+            KTGHourMarkerView* hourMarkerView = [[KTGHourMarkerView alloc] initWithFrame:CGRectMake(0, i * (self.hourHeight + 2 * HOUR_VIEW_MARGIN), 320, self.hourHeight + 2 * HOUR_VIEW_MARGIN) title:hourTitle];
             [self.hourMarkers addSubview:hourMarkerView];
         }
     }
@@ -59,4 +65,27 @@
     }
 }
 
+- (void)reloadData{
+    for(id<KTGCalendarEvent> event in [self.dataSource events]){
+        CGFloat startHeight = [self convertStartTimeToHeight:event.startTime];
+        CGFloat endHeight = [self convertEndTimeToHeight:event.endTime];
+        CGFloat calculatedLeft = 40.f + 1.f;
+        KTGCalendarEventView* eventView = [[KTGCalendarEventView alloc] initWithFrame:CGRectMake(calculatedLeft, startHeight, CGRectGetWidth(self.bounds) - calculatedLeft - 1.f, endHeight - startHeight)];
+        eventView.event = event;
+        eventView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0.8 alpha:0.4];
+        [self.eventsContainer addSubview:eventView];
+    }
+}
+
+- (CGFloat) convertStartTimeToHeight:(NSDate*) time {
+    NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:time];
+    return (self.hourHeight) * (comps.hour + comps.minute / 60.f) + HOUR_VIEW_MARGIN * (comps.hour * 2 + 1) + HOUR_MARKER_HEADER;
+}
+
+- (CGFloat) convertEndTimeToHeight:(NSDate*) time {
+    NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:time];
+    return (self.hourHeight) * (comps.hour + comps.minute / 60.f) + HOUR_VIEW_MARGIN * (comps.hour * 2 - 1) + HOUR_MARKER_HEADER;
+}
+
 @end
+

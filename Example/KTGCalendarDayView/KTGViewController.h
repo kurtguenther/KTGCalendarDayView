@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <KTGCalendarDayView/KTGCalendarDayView.h>
 
-@interface KTGViewController : UIViewController
+@interface KTGViewController : UIViewController <KTGCalendarDayViewDelegate, KTGCalendarDayViewDataSource>
 
 @end

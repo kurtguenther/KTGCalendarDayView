@@ -7,12 +7,13 @@
 //
 
 #import "KTGViewController.h"
-#import <KTGCalendarDayView/KTGCalendarDayView.h>
+#import "KTGExampleEvent.h"
 
 @interface KTGViewController ()
 
 @property (nonatomic, strong) KTGCalendarDayView* dayView;
 @property (nonatomic, strong) NSDate* currentDate;
+
 
 @end
 
@@ -30,6 +31,48 @@
     
     self.dayView = [[KTGCalendarDayView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.dayView];
+    
+    self.dayView.delegate = self;
+    self.dayView.dataSource = self;
+    
+    [self.dayView reloadData];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark KTGCalendarDayViewDataSource
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (NSArray *)events {
+    NSMutableArray* retVal = [NSMutableArray array];
+
+
+    NSDate* today = [NSDate date];
+    for (int i = 0; i < 10; i++){
+        KTGExampleEvent* event = [[KTGExampleEvent alloc] init];
+        event.eventName = [@(i) stringValue];
+
+        NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:today];
+        comps.hour = 0;
+        comps.minute = i * 30;
+        event.start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+        
+        comps.minute = (i + 1) * 30;
+        
+        event.end = [[NSCalendar currentCalendar] dateFromComponents:comps];
+        [retVal addObject:event];
+        
+    }
+    
+    
+    return retVal;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark KTGCalendarDayViewDelegate
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (UIView *)calendarDayView:(KTGCalendarDayView *)calendarDayView eventViewForEvent:(id<KTGCalendarEvent>)event{
+    return nil;
 }
 
 @end
