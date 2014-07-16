@@ -80,8 +80,8 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
 
 - (KTGEventConflict) calculateConflictBetweenEvent:(id<KTGCalendarEvent>)event1 and:(id<KTGCalendarEvent>)event2 {
     if([event1.startTime kg_isBetweenDate:event2.startTime andDate:event2.endTime] ||
-       [event2.endTime kg_isBetweenDate:event2.startTime andDate:event2.endTime]){
-        if([event1.startTime timeIntervalSinceDate:event2.startTime] < 30 * 60){
+       [event1.endTime kg_isBetweenDate:event2.startTime andDate:event2.endTime]) {
+        if([event1.startTime timeIntervalSinceDate:event2.startTime] < 30 * 60) {
             return KTGEventConflictLarge;
         } else {
             return KTGEventConflictSmall;
@@ -114,11 +114,11 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         for(int j = 0; j < i; j++){
             KTGEventConflict conflict = [self calculateConflictBetweenEvent:event and:events[j]];
             if(conflict == KTGEventConflictSmall){
-                NSLog(@"Small conflict between %d and %d", i, j);
+                NSLog(@"Small conflict between %@ and %@", event, events[j]);
                 //scootch the new one, leave the old untouched
                 calculatedLeft = calculatedLeft + 4.f;
             } else if(conflict == KTGEventConflictLarge){
-                NSLog(@"Large conflict between %d and %d", i, j);
+                NSLog(@"Large conflict between %@ and %@", event, events[j]);
                 //Split up the time
                 calculatedLeft = calculatedLeft + calculatedWidth / 2;
                 calculatedWidth = calculatedWidth / 2;
