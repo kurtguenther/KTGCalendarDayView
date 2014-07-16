@@ -20,7 +20,7 @@ it, simply add the following line to your Podfile:
 
 ## Author
 
-Kurt Guenther, kurtguenther@gmail.com
+Kurt Guenther, kurtguenther@gmail.com, [kurtguenther.me](http://kurtguenther.me)
 
 ## License
 

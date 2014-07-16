@@ -55,7 +55,7 @@
         comps.minute = i * 60;
         event.start = [[NSCalendar currentCalendar] dateFromComponents:comps];
         
-        comps.minute = (i + 1) * 60;
+        comps.minute = i%2 == 0 ? (i + 1) * 60 : (i + 0.5) * 60 ;
         
         event.end = [[NSCalendar currentCalendar] dateFromComponents:comps];
         [retVal addObject:event];
