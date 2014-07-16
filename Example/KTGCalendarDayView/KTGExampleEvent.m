@@ -27,7 +27,7 @@
     return self.end;
 }
 
--(NSString*)description {
+-(NSString*)subtitle {
     return @"An example event";
 }
 

@@ -14,5 +14,6 @@
 @property (nonatomic, strong) id<KTGCalendarEvent> event;
 
 @property (nonatomic, strong) UILabel* titleLabel;
+@property (nonatomic, strong) UILabel* subtitleLabel;
 
 @end

@@ -763,11 +763,11 @@
 				777EC16AAECB4282904FEB80 /* KTGCalendarDayView.h */,
 				F7A8F9183BB44AB3A0F42A31 /* KTGCalendarDayView.m */,
 				69C24C802CC14AD2B175C443 /* KTGCalendarEvent.h */,
+				0F87C9731976236D00BB7D8F /* KTGCalendarEventView.h */,
+				0F87C9741976236D00BB7D8F /* KTGCalendarEventView.m */,
 				683A91B55E5F4B3D90FBA1FB /* KTGHourMarkerView.h */,
 				9C826158F94D4A2EB301685C /* KTGHourMarkerView.m */,
 				A9B16479B2864F2DB233000E /* Support Files */,
-				0F87C9731976236D00BB7D8F /* KTGCalendarEventView.h */,
-				0F87C9741976236D00BB7D8F /* KTGCalendarEventView.m */,
 			);
 			name = KTGCalendarDayView;
 			path = ../..;

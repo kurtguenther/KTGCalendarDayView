@@ -22,9 +22,20 @@
         self.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
         self.titleLabel.numberOfLines = 0;
         
+        self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 5.f, 0.f)];
+        self.subtitleLabel.textColor = [self calculateTextColor:baseColor];
+        self.subtitleLabel.font = [UIFont systemFontOfSize:10.f];
+        self.subtitleLabel.numberOfLines = 0;
+        
         self.backgroundColor = [self calculateBackgroundColor:baseColor];
         
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        self.subtitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        
         [self addSubview:self.titleLabel];
+        [self addSubview:self.subtitleLabel];
+        
+        self.clipsToBounds = YES;
     }
     return self;
 }
@@ -34,6 +45,32 @@
     self.titleLabel.text = [event title];
     [self.titleLabel sizeToFit];
     
+    if([event respondsToSelector:@selector(subtitle)]){
+        self.subtitleLabel.text = [event subtitle];
+        [self.subtitleLabel sizeToFit];
+    }
+    
+    [self setNeedsLayout];
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    BOOL canFitVertically = CGRectGetHeight(self.bounds) >  self.titleLabel.intrinsicContentSize.height + self.subtitleLabel.intrinsicContentSize.height;
+    
+    NSDictionary* views = @{@"title" : self.titleLabel, @"subtitle" : self.subtitleLabel};
+    
+    if(canFitVertically){
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-5-[title]" options:0 metrics:nil views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-5-[subtitle]" options:0 metrics:nil views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[title]-0-[subtitle]" options:0 metrics:nil views:views]];
+    } else {
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-5-[title]-5-[subtitle]" options:0 metrics:nil views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[title]" options:0 metrics:nil views:views]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.titleLabel attribute:NSLayoutAttributeBaseline relatedBy:NSLayoutRelationEqual toItem:self.subtitleLabel attribute:NSLayoutAttributeBaseline multiplier:1.0 constant:0]];
+    }
+    
+    [self.subtitleLabel sizeToFit];
+    [super layoutSubviews];
 }
 
 - (UIColor*) calculateBackgroundColor:(UIColor*)input {
@@ -46,7 +83,7 @@
 - (UIColor*) calculateTextColor:(UIColor*)input {
     CGFloat hue, saturation, brightness, alpha ;
     [input getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha ] ;
-    UIColor * newColor = [ UIColor colorWithHue:hue saturation:saturation brightness:0.5 alpha:alpha ] ;
+    UIColor * newColor = [ UIColor colorWithHue:hue saturation:saturation brightness:brightness*0.7 alpha:alpha ] ;
     return newColor;
 }
 

@@ -16,7 +16,7 @@
 -(NSDate*)endTime;
 
 @optional
--(NSString*)description;
+-(NSString*)subtitle;
 -(UIColor*)color;
 
 @end
