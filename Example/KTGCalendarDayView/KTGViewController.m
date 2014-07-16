@@ -37,27 +37,6 @@
     
     NSMutableArray* retVal = [NSMutableArray array];
     
-//    NSDate* today = [NSDate date];
-//    for (int i = 0; i < 10; i++){
-//        KTGExampleEvent* event = [[KTGExampleEvent alloc] init];
-//        event.eventName = [NSString stringWithFormat:@"Event #%d", i];
-//        
-//        NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:today];
-//        comps.hour = 0;
-//        comps.minute = i % 2 == 0 ? i * 60 : (i-1) * 60 + 30;
-//        event.start = [[NSCalendar currentCalendar] dateFromComponents:comps];
-//        
-//        if(i % 2 == 1){
-//            event.location = [NSString stringWithFormat:@"Location %d", i];
-//        }
-//        
-//        comps.minute = i % 2 == 0 ? (i + 1) * 60 : (i-1) * 60 + 60 ;
-//        
-//        event.end = [[NSCalendar currentCalendar] dateFromComponents:comps];
-//        [retVal addObject:event];
-//        
-//    }
-    
     self.exampleEvents = retVal;
     
     self.dayView.delegate = self;
@@ -73,7 +52,7 @@
 }
 
 - (void)fetchLocalEvents {
-    EKEventStore* store = [[EKEventStore alloc] init];
+
     NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
     comps.hour = 0;
     comps.minute = 0;
@@ -84,8 +63,17 @@
     comps.minute = 59;
     
     NSDate* end = [[NSCalendar currentCalendar] dateFromComponents:comps];
-    
+
+    EKEventStore* store = [[EKEventStore alloc] init];
     NSArray* calendarEvents = [store eventsMatchingPredicate:[store predicateForEventsWithStartDate:begin endDate:end calendars:nil]];
+    
+    if(calendarEvents.count != 0){
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[[UIAlertView alloc] initWithTitle:@"No events found" message:@"Add some events in Calendar.app" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        });
+        return;
+    }
+    
     
     NSMutableArray* retVal = [NSMutableArray array];
     
