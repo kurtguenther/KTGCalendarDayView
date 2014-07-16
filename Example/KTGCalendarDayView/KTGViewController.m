@@ -67,7 +67,7 @@
     EKEventStore* store = [[EKEventStore alloc] init];
     NSArray* calendarEvents = [store eventsMatchingPredicate:[store predicateForEventsWithStartDate:begin endDate:end calendars:nil]];
     
-    if(calendarEvents.count != 0){
+    if(calendarEvents.count == 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[[UIAlertView alloc] initWithTitle:@"No events found" message:@"Add some events in Calendar.app" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         });
