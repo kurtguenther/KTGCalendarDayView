@@ -12,7 +12,7 @@
 @class KTGCalendarDayView;
 
 @protocol KTGCalendarDayViewDelegate <NSObject>
-@required
+
 @end
 
 @protocol KTGCalendarDayViewDataSource <NSObject>
@@ -20,7 +20,6 @@
 -(NSArray*)events;
 - (UIView*)calendarDayView:(KTGCalendarDayView*)calendarDayView eventViewForEvent:(id<KTGCalendarEvent>)event;
 @end
-
 
 
 @interface KTGCalendarDayView : UIView

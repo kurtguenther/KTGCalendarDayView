@@ -48,7 +48,7 @@
                 hourTitle = [NSString stringWithFormat:@"%d", i%12];
             }
             
-            KTGHourMarkerView* hourMarkerView = [[KTGHourMarkerView alloc] initWithFrame:CGRectMake(0, i * (self.hourHeight + 2 * HOUR_VIEW_MARGIN), 320, self.hourHeight + 2 * HOUR_VIEW_MARGIN) title:hourTitle];
+            KTGHourMarkerView* hourMarkerView = [[KTGHourMarkerView alloc] initWithFrame:CGRectMake(0, i * (self.hourHeight + 2 * HOUR_VIEW_MARGIN), CGRectGetWidth(self.bounds), self.hourHeight + 2 * HOUR_VIEW_MARGIN) title:hourTitle];
             [self.hourMarkers addSubview:hourMarkerView];
         }
     }
@@ -63,6 +63,11 @@
     if ([keyPath isEqualToString:@"hourHeight"]) {
         self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds), 24.0 * self.hourHeight);
     }
+}
+
+- (void)setDataSource:(id<KTGCalendarDayViewDataSource>)dataSource {
+    _dataSource = dataSource;
+    [self reloadData];
 }
 
 - (void)reloadData{
