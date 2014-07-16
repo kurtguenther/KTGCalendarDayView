@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSDate* start;
 @property (nonatomic, strong) NSDate* end;
 @property (nonatomic, strong) NSString* eventName;
+@property (nonatomic, strong) NSString* location;
 
 @end

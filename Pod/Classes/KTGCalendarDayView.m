@@ -15,6 +15,13 @@
 #define HOUR_MARKER_HEADER 10.f
 #define HOUR_VIEW_MARGIN 2.0f
 
+typedef NS_ENUM(NSInteger, KTGEventConflict) {
+    KTGEventConflictNone,
+    KTGEventConflictSmall,
+    KTGEventConflictLarge
+};
+
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -70,16 +77,50 @@
     [self reloadData];
 }
 
+- (KTGEventConflict) calculateConflictBetweenEvent:(id<KTGCalendarEvent>)event1 and:(id<KTGCalendarEvent>)event2 {
+    
+    if((event1.startTime < event2.endTime && event1.startTime > event2.startTime) ||
+       (event1.endTime > event2.startTime && event1.endTime < event2.endTime)){
+        return KTGEventConflictSmall;
+    }
+    
+    return KTGEventConflictNone;
+}
+
 - (void)reloadData{
+    for(UIView* oldEventView in self.eventsContainer.subviews){
+        [oldEventView removeFromSuperview];
+    }
+    
     NSArray* events = [self.dataSource events];
     events = [events sortedArrayUsingSelector:@selector(startTime)];
     
     NSMutableArray* rects = [NSMutableArray arrayWithCapacity:events.count];
-    for(id<KTGCalendarEvent> event in events){
+    for(int i = 0; i < events.count; i++){
+        id<KTGCalendarEvent> event = events[i];
+        
         CGFloat startHeight = [self convertStartTimeToHeight:event.startTime];
         CGFloat endHeight = [self convertEndTimeToHeight:event.endTime];
+        
         CGFloat calculatedLeft = 40.f + 1.f;
-        CGRect calculatedRect = CGRectMake(calculatedLeft, startHeight, CGRectGetWidth(self.bounds) - calculatedLeft - 1.f, endHeight - startHeight);
+        CGFloat calculatedWidth = CGRectGetWidth(self.bounds) - calculatedLeft - 1.f;
+        
+        for(int j = 0; j < i; j++){
+            KTGEventConflict conflict = [self calculateConflictBetweenEvent:event and:events[j]];
+            if(conflict == KTGEventConflictSmall){
+                //scootch the new one, leave the old untouched
+                NSLog(@"Small conflict");
+                calculatedLeft = calculatedLeft + 4.f;
+            } else if(conflict == KTGEventConflictLarge){
+                //TODO
+                NSLog(@"Large conflict");
+            } else {
+                //NOOP
+                NSLog(@"No conflict");
+            }
+        }
+        
+        CGRect calculatedRect = CGRectMake(calculatedLeft, startHeight, calculatedWidth, endHeight - startHeight);
         [rects addObject:[NSValue valueWithCGRect:calculatedRect]];
     }
     
@@ -91,7 +132,6 @@
         eventView.event = event;
         [self.eventsContainer addSubview:eventView];
     }
-    
 }
 
 - (CGFloat) convertStartTimeToHeight:(NSDate*) time {

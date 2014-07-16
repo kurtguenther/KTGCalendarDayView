@@ -11,4 +11,6 @@
 
 @interface KTGViewController : UIViewController <KTGCalendarDayViewDelegate, KTGCalendarDayViewDataSource>
 
+-(void)fetchLocalEvents;
+
 @end

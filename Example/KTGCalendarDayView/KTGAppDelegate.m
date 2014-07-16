@@ -9,16 +9,21 @@
 #import "KTGAppDelegate.h"
 #import "KTGViewController.h"
 
+@interface KTGAppDelegate ()
+
+@property (nonatomic, strong) KTGViewController* rootViewController;
+
+@end
+
 @implementation KTGAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:[[KTGViewController alloc] init]];
+    self.rootViewController = [[KTGViewController alloc] init];
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
     
     self.window.rootViewController = navigationController;
-    
     [self.window makeKeyAndVisible];
     
     return YES;
@@ -44,6 +49,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [self.rootViewController fetchLocalEvents];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

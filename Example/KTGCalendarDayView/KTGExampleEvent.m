@@ -28,7 +28,7 @@
 }
 
 -(NSString*)subtitle {
-    return @"An example event";
+    return self.location;
 }
 
 
