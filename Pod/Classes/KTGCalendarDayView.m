@@ -71,15 +71,27 @@
 }
 
 - (void)reloadData{
-    for(id<KTGCalendarEvent> event in [self.dataSource events]){
+    NSArray* events = [self.dataSource events];
+    events = [events sortedArrayUsingSelector:@selector(startTime)];
+    
+    NSMutableArray* rects = [NSMutableArray arrayWithCapacity:events.count];
+    for(id<KTGCalendarEvent> event in events){
         CGFloat startHeight = [self convertStartTimeToHeight:event.startTime];
         CGFloat endHeight = [self convertEndTimeToHeight:event.endTime];
         CGFloat calculatedLeft = 40.f + 1.f;
-        KTGCalendarEventView* eventView = [[KTGCalendarEventView alloc] initWithFrame:CGRectMake(calculatedLeft, startHeight, CGRectGetWidth(self.bounds) - calculatedLeft - 1.f, endHeight - startHeight)];
+        CGRect calculatedRect = CGRectMake(calculatedLeft, startHeight, CGRectGetWidth(self.bounds) - calculatedLeft - 1.f, endHeight - startHeight);
+        [rects addObject:[NSValue valueWithCGRect:calculatedRect]];
+    }
+    
+    for(int i = 0; i < events.count; i++){
+        CGRect frame = [rects[i] CGRectValue];
+        id<KTGCalendarEvent> event = events[i];
+        
+        KTGCalendarEventView* eventView = [[KTGCalendarEventView alloc] initWithFrame:frame];
         eventView.event = event;
-        eventView.backgroundColor = [UIColor colorWithRed:0.7 green:0.8 blue:0.9 alpha:0.4];
         [self.eventsContainer addSubview:eventView];
     }
+    
 }
 
 - (CGFloat) convertStartTimeToHeight:(NSDate*) time {

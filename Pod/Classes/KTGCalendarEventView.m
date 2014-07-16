@@ -76,7 +76,7 @@
 - (UIColor*) calculateBackgroundColor:(UIColor*)input {
     CGFloat hue, saturation, brightness, alpha ;
     [input getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha ] ;
-    UIColor * newColor = [ UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha * 0.4 ] ;
+    UIColor * newColor = [ UIColor colorWithHue:hue saturation:saturation*0.2 brightness:1.0 alpha:alpha * 0.8 ] ;
     return newColor;
 }
 
