@@ -91,7 +91,8 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
 }
 
 
-- (void)reloadData{
+- (void)reloadData {
+    //Remove all the old events
     for(UIView* oldEventView in self.eventsContainer.subviews){
         [oldEventView removeFromSuperview];
     }
@@ -111,6 +112,7 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         CGFloat calculatedLeft = 40.f + 1.f;
         CGFloat calculatedWidth = CGRectGetWidth(self.bounds) - calculatedLeft - 1.f;
         
+        //TODO really need to bulletproof this.
         for(int j = 0; j < i; j++){
             KTGEventConflict conflict = [self calculateConflictBetweenEvent:event and:events[j]];
             if(conflict == KTGEventConflictSmall){

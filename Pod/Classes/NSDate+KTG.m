@@ -10,7 +10,7 @@
 
 @implementation NSDate (KTG)
 
-- (BOOL) kg_isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
+- (BOOL) ktg_isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
 {
     if ([self compare:beginDate] == NSOrderedAscending)
     	return NO;
