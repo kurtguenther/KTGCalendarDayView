@@ -7,8 +7,12 @@
 //
 
 #import "KTGViewController.h"
+#import <KTGCalendarDayView/KTGCalendarDayView.h>
 
 @interface KTGViewController ()
+
+@property (nonatomic, strong) KTGCalendarDayView* dayView;
+@property (nonatomic, strong) NSDate* currentDate;
 
 @end
 
@@ -17,13 +21,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    self.currentDate = [NSDate date];
+    
+    NSDateFormatter* df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"EEEE MMMM dd, YYYY";
+    self.title = [df stringFromDate:self.currentDate];
+    
+    self.dayView = [[KTGCalendarDayView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.dayView];
 }
 
 @end
