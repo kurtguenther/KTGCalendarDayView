@@ -49,14 +49,14 @@
     NSDate* today = [NSDate date];
     for (int i = 0; i < 10; i++){
         KTGExampleEvent* event = [[KTGExampleEvent alloc] init];
-        event.eventName = [@(i) stringValue];
+        event.eventName = [NSString stringWithFormat:@"Event #%d", i];
 
         NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:today];
         comps.hour = 0;
-        comps.minute = i * 30;
+        comps.minute = i * 60;
         event.start = [[NSCalendar currentCalendar] dateFromComponents:comps];
         
-        comps.minute = (i + 1) * 30;
+        comps.minute = (i + 1) * 60;
         
         event.end = [[NSCalendar currentCalendar] dateFromComponents:comps];
         [retVal addObject:event];

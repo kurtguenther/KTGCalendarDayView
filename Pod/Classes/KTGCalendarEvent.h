@@ -17,5 +17,6 @@
 
 @optional
 -(NSString*)description;
+-(UIColor*)color;
 
 @end

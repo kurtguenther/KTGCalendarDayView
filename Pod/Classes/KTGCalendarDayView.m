@@ -13,7 +13,7 @@
 @implementation KTGCalendarDayView
 
 #define HOUR_MARKER_HEADER 10.f
-#define HOUR_VIEW_MARGIN 1.0f
+#define HOUR_VIEW_MARGIN 2.0f
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -24,7 +24,7 @@
 
         [self addObserver:self forKeyPath:@"hourHeight" options:NSKeyValueObservingOptionNew context:nil];
         
-        self.hourHeight = 44.f;
+        self.hourHeight = 47.5f;
         
         [self addSubview:self.scrollView];
         
@@ -72,7 +72,7 @@
         CGFloat calculatedLeft = 40.f + 1.f;
         KTGCalendarEventView* eventView = [[KTGCalendarEventView alloc] initWithFrame:CGRectMake(calculatedLeft, startHeight, CGRectGetWidth(self.bounds) - calculatedLeft - 1.f, endHeight - startHeight)];
         eventView.event = event;
-        eventView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0.8 alpha:0.4];
+        eventView.backgroundColor = [UIColor colorWithRed:0.7 green:0.8 blue:0.9 alpha:0.4];
         [self.eventsContainer addSubview:eventView];
     }
 }
