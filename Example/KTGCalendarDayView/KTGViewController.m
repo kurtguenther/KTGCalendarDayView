@@ -80,7 +80,7 @@
     
     NSDate* begin = [[NSCalendar currentCalendar] dateFromComponents:comps];
     
-    comps.hour = 11;
+    comps.hour = 23;
     comps.minute = 59;
     
     NSDate* end = [[NSCalendar currentCalendar] dateFromComponents:comps];
