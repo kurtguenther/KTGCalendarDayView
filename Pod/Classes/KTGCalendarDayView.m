@@ -79,8 +79,8 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
 }
 
 - (KTGEventConflict) calculateConflictBetweenEvent:(id<KTGCalendarEvent>)event1 and:(id<KTGCalendarEvent>)event2 {
-    if([event1.startTime kg_isBetweenDate:event2.startTime andDate:event2.endTime] ||
-       [event1.endTime kg_isBetweenDate:event2.startTime andDate:event2.endTime]) {
+    if([event1.startTime ktg_isBetweenDate:event2.startTime andDate:event2.endTime] ||
+       [event1.endTime ktg_isBetweenDate:event2.startTime andDate:event2.endTime]) {
         if([event1.startTime timeIntervalSinceDate:event2.startTime] < 30 * 60) {
             return KTGEventConflictLarge;
         } else {
@@ -155,6 +155,28 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
 - (CGFloat) convertEndTimeToHeight:(NSDate*) time {
     NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:time];
     return (self.hourHeight) * (comps.hour + comps.minute / 60.f) + HOUR_VIEW_MARGIN * (comps.hour * 2 - 1) + HOUR_MARKER_HEADER;
+}
+
+- (void)scrollToTime:(NSDate *)time position:(UITableViewScrollPosition)position animated:(BOOL)animated{
+    CGFloat timePosition = [self convertStartTimeToHeight:time];
+    CGRect frame = CGRectMake(0, timePosition, CGRectGetWidth(self.scrollView.bounds), CGRectGetHeight(self.scrollView.bounds));
+    switch(position) {
+        case UITableViewScrollPositionNone:
+        case UITableViewScrollPositionTop:
+            //Do nothing since we assume top
+            break;
+        case UITableViewScrollPositionBottom:
+            frame.size.height = 1.f; //0 causes the scroll view not to scroll.
+            break;
+        case UITableViewScrollPositionMiddle:
+            frame.size.height = CGRectGetHeight(self.scrollView.bounds) / 2.f;
+            break;
+    }
+    [self.scrollView scrollRectToVisible:frame animated:animated];
+}
+
+- (void)scrollToEvent:(id<KTGCalendarEvent>)event position:(UITableViewScrollPosition)position animated:(BOOL)animated{
+    [self scrollToTime:event.startTime position:position animated:animated];
 }
 
 @end

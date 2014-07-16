@@ -35,4 +35,7 @@
 
 -(void)reloadData;
 
+-(void)scrollToTime:(NSDate*)time position:(UITableViewScrollPosition)position animated:(BOOL)animated;
+-(void)scrollToEvent:(id<KTGCalendarEvent>)event position:(UITableViewScrollPosition)position animated:(BOOL)animated;
+
 @end

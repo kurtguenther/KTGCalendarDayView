@@ -102,7 +102,9 @@
     //Must be called on the main thread
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.dayView reloadData];
+        [self.dayView scrollToEvent:[self.exampleEvents firstObject] position:UITableViewScrollPositionMiddle animated:YES];
     });
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
