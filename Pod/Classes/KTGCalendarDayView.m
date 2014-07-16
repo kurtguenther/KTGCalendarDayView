@@ -9,6 +9,7 @@
 #import "KTGCalendarDayView.h"
 #import "KTGHourMarkerView.h"
 #import "KTGCalendarEventView.h"
+#import "NSDate+KTG.h"
 
 @implementation KTGCalendarDayView
 
@@ -78,14 +79,17 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
 }
 
 - (KTGEventConflict) calculateConflictBetweenEvent:(id<KTGCalendarEvent>)event1 and:(id<KTGCalendarEvent>)event2 {
-    
-    if((event1.startTime < event2.endTime && event1.startTime > event2.startTime) ||
-       (event1.endTime > event2.startTime && event1.endTime < event2.endTime)){
-        return KTGEventConflictSmall;
+    if([event1.startTime kg_isBetweenDate:event2.startTime andDate:event2.endTime] ||
+       [event2.endTime kg_isBetweenDate:event2.startTime andDate:event2.endTime]){
+        if([event1.startTime timeIntervalSinceDate:event2.startTime] < 30 * 60){
+            return KTGEventConflictLarge;
+        } else {
+            return KTGEventConflictSmall;
+        }
     }
-    
     return KTGEventConflictNone;
 }
+
 
 - (void)reloadData{
     for(UIView* oldEventView in self.eventsContainer.subviews){
@@ -93,7 +97,9 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
     }
     
     NSArray* events = [self.dataSource events];
-    events = [events sortedArrayUsingSelector:@selector(startTime)];
+    events = [events sortedArrayUsingComparator:^NSComparisonResult(id<KTGCalendarEvent> obj1, id<KTGCalendarEvent> obj2) {
+        return [obj1.startTime compare: obj2.startTime];
+    }];
     
     NSMutableArray* rects = [NSMutableArray arrayWithCapacity:events.count];
     for(int i = 0; i < events.count; i++){
@@ -108,15 +114,20 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         for(int j = 0; j < i; j++){
             KTGEventConflict conflict = [self calculateConflictBetweenEvent:event and:events[j]];
             if(conflict == KTGEventConflictSmall){
+                NSLog(@"Small conflict between %d and %d", i, j);
                 //scootch the new one, leave the old untouched
-                NSLog(@"Small conflict");
                 calculatedLeft = calculatedLeft + 4.f;
             } else if(conflict == KTGEventConflictLarge){
-                //TODO
-                NSLog(@"Large conflict");
+                NSLog(@"Large conflict between %d and %d", i, j);
+                //Split up the time
+                calculatedLeft = calculatedLeft + calculatedWidth / 2;
+                calculatedWidth = calculatedWidth / 2;
+                
+                CGRect orig = [rects[j] CGRectValue];
+                orig.size.width = calculatedLeft - 2.f - orig.origin.x;
+                rects[j] = [NSValue valueWithCGRect:orig];
             } else {
                 //NOOP
-                NSLog(@"No conflict");
             }
         }
         

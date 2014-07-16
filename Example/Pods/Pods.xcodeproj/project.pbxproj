@@ -18,6 +18,7 @@
 		0DC3058D50B94E379703A05C /* libPods-Tests-FBSnapshotTestCase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B8B70821E504E7D9C8290A0 /* libPods-Tests-FBSnapshotTestCase.a */; };
 		0E98D2298A384BC28FDBE99D /* ExpectaSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A25B72993A4C1C91479994 /* ExpectaSupport.m */; };
 		0F87C9751976236D00BB7D8F /* KTGCalendarEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F87C9741976236D00BB7D8F /* KTGCalendarEventView.m */; };
+		0F87C97A1976E96300BB7D8F /* NSDate+KTG.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F87C9791976E96300BB7D8F /* NSDate+KTG.m */; };
 		12CDA77D9EDA44D985AC6FA9 /* EXPExpect.h in Headers */ = {isa = PBXBuildFile; fileRef = A478DBC9D8144F3EB565984E /* EXPExpect.h */; };
 		140E77F995214D6EA086B29A /* KTGCalendarDayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 777EC16AAECB4282904FEB80 /* KTGCalendarDayView.h */; };
 		15532EA08C5F480CBCCED450 /* EXPMatchers+beLessThanOrEqualTo.h in Headers */ = {isa = PBXBuildFile; fileRef = 9990BD63BA2C4E7EBA3AC5E4 /* EXPMatchers+beLessThanOrEqualTo.h */; };
@@ -225,6 +226,8 @@
 		0E2016BFD6D6466DA969FD5A /* SPTExample.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SPTExample.h; path = src/SPTExample.h; sourceTree = "<group>"; };
 		0F87C9731976236D00BB7D8F /* KTGCalendarEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KTGCalendarEventView.h; path = Pod/Classes/KTGCalendarEventView.h; sourceTree = "<group>"; };
 		0F87C9741976236D00BB7D8F /* KTGCalendarEventView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KTGCalendarEventView.m; path = Pod/Classes/KTGCalendarEventView.m; sourceTree = "<group>"; };
+		0F87C9781976E96300BB7D8F /* NSDate+KTG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+KTG.h"; path = "Pod/Classes/NSDate+KTG.h"; sourceTree = "<group>"; };
+		0F87C9791976E96300BB7D8F /* NSDate+KTG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+KTG.m"; path = "Pod/Classes/NSDate+KTG.m"; sourceTree = "<group>"; };
 		0FBB3C24B53F4CA2A5F275CC /* SPTSpec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SPTSpec.h; path = src/SPTSpec.h; sourceTree = "<group>"; };
 		13082975AF614ECFA5A11477 /* UIImage+Compare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImage+Compare.h"; sourceTree = "<group>"; };
 		14344DF4EF4A462B894B99BF /* Pods-Tests-Specta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Tests-Specta.xcconfig"; sourceTree = "<group>"; };
@@ -768,6 +771,8 @@
 				683A91B55E5F4B3D90FBA1FB /* KTGHourMarkerView.h */,
 				9C826158F94D4A2EB301685C /* KTGHourMarkerView.m */,
 				A9B16479B2864F2DB233000E /* Support Files */,
+				0F87C9781976E96300BB7D8F /* NSDate+KTG.h */,
+				0F87C9791976E96300BB7D8F /* NSDate+KTG.m */,
 			);
 			name = KTGCalendarDayView;
 			path = ../..;
@@ -1145,6 +1150,7 @@
 			files = (
 				0F87C9751976236D00BB7D8F /* KTGCalendarEventView.m in Sources */,
 				FBB1343604AB459484E65987 /* Pods-KTGCalendarDayView-dummy.m in Sources */,
+				0F87C97A1976E96300BB7D8F /* NSDate+KTG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

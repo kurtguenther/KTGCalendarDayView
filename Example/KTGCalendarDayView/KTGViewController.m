@@ -37,26 +37,26 @@
     
     NSMutableArray* retVal = [NSMutableArray array];
     
-    NSDate* today = [NSDate date];
-    for (int i = 0; i < 10; i++){
-        KTGExampleEvent* event = [[KTGExampleEvent alloc] init];
-        event.eventName = [NSString stringWithFormat:@"Event #%d", i];
-        
-        NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:today];
-        comps.hour = 0;
-        comps.minute = i % 2 == 0 ? i * 60 : (i-1) * 60 + 30;
-        event.start = [[NSCalendar currentCalendar] dateFromComponents:comps];
-        
-        if(i % 2 == 1){
-            event.location = [NSString stringWithFormat:@"Location %d", i];
-        }
-        
-        comps.minute = i % 2 == 0 ? (i + 1) * 60 : (i-1) * 60 + 60 ;
-        
-        event.end = [[NSCalendar currentCalendar] dateFromComponents:comps];
-        [retVal addObject:event];
-        
-    }
+//    NSDate* today = [NSDate date];
+//    for (int i = 0; i < 10; i++){
+//        KTGExampleEvent* event = [[KTGExampleEvent alloc] init];
+//        event.eventName = [NSString stringWithFormat:@"Event #%d", i];
+//        
+//        NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:today];
+//        comps.hour = 0;
+//        comps.minute = i % 2 == 0 ? i * 60 : (i-1) * 60 + 30;
+//        event.start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+//        
+//        if(i % 2 == 1){
+//            event.location = [NSString stringWithFormat:@"Location %d", i];
+//        }
+//        
+//        comps.minute = i % 2 == 0 ? (i + 1) * 60 : (i-1) * 60 + 60 ;
+//        
+//        event.end = [[NSCalendar currentCalendar] dateFromComponents:comps];
+//        [retVal addObject:event];
+//        
+//    }
     
     self.exampleEvents = retVal;
     
