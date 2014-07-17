@@ -15,7 +15,7 @@
     if ([self compare:beginDate] == NSOrderedAscending)
     	return NO;
     
-    if ([self compare:endDate] == NSOrderedDescending)
+    if ([self compare:endDate] == NSOrderedDescending || [self compare:endDate] == NSOrderedSame)
     	return NO;
     
     return YES;
