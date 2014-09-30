@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        //TODO allow other colors
         UIColor* baseColor = [UIColor colorWithRed:27/255.f green:173/255.f blue:248/255.f alpha:1.0];
         
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 5.f, 0.f)];

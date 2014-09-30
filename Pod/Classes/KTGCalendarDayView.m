@@ -10,6 +10,15 @@
 #import "KTGHourMarkerView.h"
 #import "KTGCalendarEventView.h"
 #import "NSDate+KTG.h"
+#import "KTGCalendarNewEventView.h"
+
+@interface KTGCalendarDayView ()
+
+@property (nonatomic, strong) NSMutableDictionary* viewEventDictionary;
+
+@property (nonatomic, strong) UIView* createdEventView;
+@property (nonatomic) CGPoint newEventAnchorPoint;
+@end
 
 @implementation KTGCalendarDayView
 
@@ -49,16 +58,21 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         for(int i = 0; i < 24; i++){
             NSString* hourTitle;
             if(i == 0) {
-                hourTitle = @"12";
+                hourTitle = @"12 AM";
             } else if(i == 12) {
                 hourTitle = @"Noon";
+            } else if(i < 12){
+                hourTitle = [NSString stringWithFormat:@"%d AM", i%12];
             } else {
-                hourTitle = [NSString stringWithFormat:@"%d", i%12];
+                hourTitle = [NSString stringWithFormat:@"%d PM", i%12];
             }
             
             KTGHourMarkerView* hourMarkerView = [[KTGHourMarkerView alloc] initWithFrame:CGRectMake(0, i * (self.hourHeight + 2 * HOUR_VIEW_MARGIN), CGRectGetWidth(self.bounds), self.hourHeight + 2 * HOUR_VIEW_MARGIN) title:hourTitle];
             [self.hourMarkers addSubview:hourMarkerView];
         }
+        
+        UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+        [self addGestureRecognizer:longPressGesture];
     }
     return self;
 }
@@ -96,6 +110,8 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
     for(UIView* oldEventView in self.eventsContainer.subviews){
         [oldEventView removeFromSuperview];
     }
+    
+    self.viewEventDictionary = [NSMutableDictionary dictionary];
     
     NSArray* events = [self.dataSource events];
     events = [events sortedArrayUsingComparator:^NSComparisonResult(id<KTGCalendarEvent> obj1, id<KTGCalendarEvent> obj2) {
@@ -135,6 +151,7 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         
         CGRect calculatedRect = CGRectMake(calculatedLeft, startHeight, calculatedWidth, endHeight - startHeight);
         [rects addObject:[NSValue valueWithCGRect:calculatedRect]];
+        
     }
     
     for(int i = 0; i < events.count; i++){
@@ -144,6 +161,8 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         KTGCalendarEventView* eventView = [[KTGCalendarEventView alloc] initWithFrame:frame];
         eventView.event = event;
         [self.eventsContainer addSubview:eventView];
+        
+        self.viewEventDictionary[[NSValue valueWithNonretainedObject:eventView]] = event;
     }
 }
 
@@ -157,7 +176,7 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
     return (self.hourHeight) * (comps.hour + comps.minute / 60.f) + HOUR_VIEW_MARGIN * (comps.hour * 2 - 1) + HOUR_MARKER_HEADER;
 }
 
-- (void)scrollToTime:(NSDate *)time position:(UITableViewScrollPosition)position animated:(BOOL)animated{
+- (void)scrollToTime:(NSDate *)time position:(UITableViewScrollPosition)position animated:(BOOL)animated {
     CGFloat timePosition = [self convertStartTimeToHeight:time];
     CGRect frame = CGRectMake(0, timePosition, CGRectGetWidth(self.scrollView.bounds), CGRectGetHeight(self.scrollView.bounds));
     switch(position) {
@@ -177,6 +196,66 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
 
 - (void)scrollToEvent:(id<KTGCalendarEvent>)event position:(UITableViewScrollPosition)position animated:(BOOL)animated{
     [self scrollToTime:event.startTime position:position animated:animated];
+}
+
+- (UIView*)newEventViewAtPoint:(CGPoint)point {
+    CGFloat height = self.hourHeight;
+    CGFloat left = 41.f;
+    CGFloat top = point.y - height / 2;
+    CGFloat width = 320.f - left;
+    
+    UIView* retVal = [[KTGCalendarNewEventView alloc] initWithFrame:CGRectMake(left, top, width, height)];
+    return retVal;
+}
+
+
+- (void)longPress:(UILongPressGestureRecognizer*)recognizer {
+    if(recognizer.state == UIGestureRecognizerStateBegan){
+        NSLog(@"Long Press Start");
+        CGPoint location = [recognizer locationInView:self];
+        self.newEventAnchorPoint = location;
+        
+        UIView* matchedView = nil;
+        for(UIView* eventView in self.eventsContainer.subviews){
+            if([eventView pointInside:[eventView convertPoint:location fromView:self] withEvent:nil]){
+                matchedView = eventView;
+            }
+        }
+        
+        if(matchedView == nil){
+            NSLog(@"Creating a new event");
+            //TODO turn on and off allowing new events
+            self.createdEventView = [self newEventViewAtPoint:location];
+            [self addSubview:self.createdEventView];
+        } else {
+            id<KTGCalendarEvent> event = self.viewEventDictionary[[NSValue valueWithNonretainedObject:matchedView]];
+            NSLog(@"Editing event %@", event);
+        }
+        return;
+    }
+    
+    if(recognizer.state == UIGestureRecognizerStateEnded){
+        NSLog(@"Long Press End");
+        
+        //inform delegate that a new event has been placed
+        if([self.delegate respondsToSelector:@selector(newEventPlacedAtStartTime:endTime:)]){
+            NSDate* startTime = [NSDate date]; //TODO make this dynamic based on touch
+            NSDate* endTime = [NSDate dateWithTimeInterval:60*60 sinceDate:startTime]; //TODO make this configurable via delegate
+            [self.delegate newEventPlacedAtStartTime:startTime endTime:endTime];
+        }
+        
+        [self.createdEventView removeFromSuperview];
+        self.createdEventView = nil;
+        self.newEventAnchorPoint = CGPointZero; //probably should make something better
+        
+        return;
+    }
+    
+    if(recognizer.state == UIGestureRecognizerStateChanged){
+        //Move the event along with the touch
+        //update the hour markers to show / extra minute markers
+    }
+
 }
 
 @end

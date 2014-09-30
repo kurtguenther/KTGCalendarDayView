@@ -17,18 +17,18 @@ Pod::Spec.new do |s|
                        * Markdown format.
                        * Don't worry about the indent, we strip it!
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/KTGCalendarDayView"
+  s.homepage         = "https://github.com/kurtguenther/KTGCalendarDayView"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "Kurt Guenther" => "kurtguenther@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/KTGCalendarDayView.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => "https://github.com/kurtguenther/KTGCalendarDayView.git", :tag => s.version.to_s }
+  # s.social_media_url = 'https://twitter.com/heykurtg'
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes'
-  s.resources = 'Pod/Assets/*.png'
+  s.resources = 'Pod/Assets/*.*'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

@@ -8,10 +8,12 @@
 
 #import "KTGAppDelegate.h"
 #import "KTGViewController.h"
+#import <KTGCalendarDayView/KTGSchedulerViewController.h>
 
 @interface KTGAppDelegate ()
 
-@property (nonatomic, strong) KTGViewController* rootViewController;
+//@property (nonatomic, strong) KTGViewController* rootViewController;
+@property (nonatomic, strong) KTGSchedulerViewController* rootViewController;
 
 @end
 
@@ -20,8 +22,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.rootViewController = [[KTGViewController alloc] init];
+//    self.rootViewController = [[KTGViewController alloc] init];
+    self.rootViewController = [[KTGSchedulerViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
+    navigationController.navigationBar.translucent = NO;
     
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
@@ -42,7 +46,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     //Convenient to refresh here, since we often swap back and forth between this and Calendar.app
-    [self.rootViewController fetchLocalEvents];
+    //[self.rootViewController fetchLocalEvents];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

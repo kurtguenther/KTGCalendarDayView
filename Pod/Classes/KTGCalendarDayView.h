@@ -12,7 +12,9 @@
 @class KTGCalendarDayView;
 
 @protocol KTGCalendarDayViewDelegate <NSObject>
-
+- (BOOL) allowNewEvent;
+- (BOOL) allowModifyEvent:(id<KTGCalendarEvent>)event;
+- (BOOL) newEventPlacedAtStartTime:(NSDate*)startTime endTime:(NSDate*)endTime;
 @end
 
 @protocol KTGCalendarDayViewDataSource <NSObject>
