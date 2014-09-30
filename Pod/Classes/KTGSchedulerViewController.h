@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KTGSchedulerViewController : UIViewController
+@interface KTGSchedulerViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+
+@property (nonatomic, strong) IBOutlet UIView* weekdayPageViewControllerContainer;
 
 @end

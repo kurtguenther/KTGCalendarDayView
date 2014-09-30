@@ -30,6 +30,12 @@
 #define COCOAPODS_VERSION_MINOR_KTGCalendarDayView 1
 #define COCOAPODS_VERSION_PATCH_KTGCalendarDayView 0
 
+// Masonry
+#define COCOAPODS_POD_AVAILABLE_Masonry
+#define COCOAPODS_VERSION_MAJOR_Masonry 0
+#define COCOAPODS_VERSION_MINOR_Masonry 5
+#define COCOAPODS_VERSION_PATCH_Masonry 3
+
 // Specta
 #define COCOAPODS_POD_AVAILABLE_Specta
 #define COCOAPODS_VERSION_MAJOR_Specta 0

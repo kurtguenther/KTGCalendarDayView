@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KTGSchedulerViewController">
             <connections>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="weekdayPageViewControllerContainer" destination="5lX-eD-9h0" id="adx-rR-MDN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -14,8 +15,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dlg-bF-Z9a" userLabel="Day of Week Header">
-                    <rect key="frame" x="0.0" y="-3" width="320" height="25"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlg-bF-Z9a" userLabel="Day of Week Header">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="18"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hal-Z7-SkY">
                             <rect key="frame" x="0.0" y="0.0" width="46" height="15"/>
@@ -60,7 +61,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="nAv-Gt-1Yq" secondAttribute="centerY" id="3eZ-cH-qdo"/>
                         <constraint firstItem="MjV-Cy-IB7" firstAttribute="width" secondItem="nAv-Gt-1Yq" secondAttribute="width" id="6RH-vi-i9P"/>
@@ -88,11 +89,21 @@
                         <constraint firstItem="MjV-Cy-IB7" firstAttribute="trailing" secondItem="MZV-3a-0lu" secondAttribute="leading" id="x0m-1O-ut2"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5lX-eD-9h0" userLabel="Week Days Page Controller Container">
+                    <rect key="frame" x="0.0" y="18" width="320" height="40"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="R2z-rL-D9q"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.10980392160000001" green="0.56470588239999997" blue="0.85098039219999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="dlg-bF-Z9a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0jm-3z-lSq"/>
                 <constraint firstItem="dlg-bF-Z9a" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hF1-1u-ZSj"/>
+                <constraint firstItem="5lX-eD-9h0" firstAttribute="top" secondItem="dlg-bF-Z9a" secondAttribute="bottom" id="iq6-Lh-aGD"/>
+                <constraint firstItem="5lX-eD-9h0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mhY-c4-7hc"/>
+                <constraint firstAttribute="trailing" secondItem="5lX-eD-9h0" secondAttribute="trailing" id="pw9-vY-FCu"/>
                 <constraint firstAttribute="trailing" secondItem="dlg-bF-Z9a" secondAttribute="trailing" id="two-wn-F40"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
