@@ -9,6 +9,8 @@
 #import "KTGWeekdayHeaderViewController.h"
 #import <Masonry/Masonry.h>
 #import "KTGWeekdayHeaderView.h"
+#import "KTGSchedulerViewController.h"
+#import "NSDate+KTG.h"
 
 @interface KTGWeekdayHeaderViewController ()
 
@@ -21,8 +23,23 @@
     self = [super init];
     if(self){
         self.startDay = day;
+        self.selectedIndex = -1;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateUpdate:) name:KTGSchedulerViewControllerDateChanged object:nil];
     }
     return self;
+}
+
+- (void) dateUpdate:(NSNotification*)notification {
+    if(notification.object != self){
+        NSDate* newDate = notification.userInfo[KTGSchedulerViewControllerNewDateKey];
+        for(int i = 0; i < self.weekdayViews.count; i++){
+            KTGWeekdayHeaderView* hv = self.weekdayViews[i];
+            if([hv.date ktg_isSameDay:newDate]){
+                [self setSelectedIndex:i];
+                break;
+            }
+        }
+    }
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex{
@@ -32,7 +49,6 @@
             KTGWeekdayHeaderView* v = self.weekdayViews[i];
             v.isSelected = (i == _selectedIndex);
         }
-
     }
 
 }
@@ -83,6 +99,11 @@
 - (void)selectDay:(UITapGestureRecognizer*)sender {
     int newIndex = [self.weekdayViews indexOfObject:sender.view];
     self.selectedIndex = newIndex;
+   [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:self userInfo:@{KTGSchedulerViewControllerNewDateKey: [self.weekdayViews[self.selectedIndex] date]}];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

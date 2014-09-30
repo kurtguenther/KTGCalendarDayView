@@ -9,6 +9,7 @@
 #import "KTGSchedulerViewController.h"
 #import "KTGWeekdayHeaderViewController.h"
 #import "KTGCalendarDayViewController.h"
+#import "NSDate+KTG.h"
 
 @interface KTGSchedulerViewController ()
 
@@ -40,7 +41,6 @@
     [self.weekdayPageViewControllerContainer addSubview:self.weekdayPageViewController.view];
     [self.weekdayPageViewController didMoveToParentViewController:self];
     
-
     
     self.dayPageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{}];
     self.dayPageViewController.delegate = self;
@@ -57,7 +57,69 @@
     [self.dayViewPageViewControllerContainer addSubview:self.dayPageViewController.view];
     [self.dayPageViewController didMoveToParentViewController:self];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateUpdate:) name:KTGSchedulerViewControllerDateChanged object:nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:nil userInfo:@{KTGSchedulerViewControllerNewDateKey : [NSDate date]}];
+    
 }
+
+- (void) dateUpdate:(NSNotification*)notification {
+    if(notification.object != self){
+        NSDate* newDate = notification.userInfo[KTGSchedulerViewControllerNewDateKey];
+        
+        if([newDate ktg_isSameDay:self.currentDate]) {
+            return;
+        }
+        
+        self.currentDate = newDate;
+        
+        NSDateFormatter* df = [[NSDateFormatter alloc] init];
+        df.dateFormat = @"EEEE  MMMM dd, YYYY";
+
+        
+        CATransition *animation = [CATransition animation];
+        animation.duration = 0.3;
+        animation.type = kCATransitionFade;
+        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        [self.currentDateLabel.layer addAnimation:animation forKey:@"changeTextTransition"];
+        
+        // Change the text
+        self.currentDateLabel.text = [df stringFromDate:self.currentDate];
+        
+        NSLog(@"Updated master date from source:%@", notification.object);
+        
+        //TODO update the pagers
+        if(notification.object != self.weekdayPageViewController && ![notification.object isKindOfClass:[KTGWeekdayHeaderViewController class]]){
+            //update the weekday pager
+            //update the pager
+            KTGWeekdayHeaderViewController* currentWeekDay = self.weekdayPageViewController.viewControllers[0];
+            if([self.currentDate earlierDate:currentWeekDay.startDay] == self.currentDate){
+                KTGWeekdayHeaderViewController* newWeekVC = (KTGWeekdayHeaderViewController*) [self pageViewController:self.weekdayPageViewController viewControllerBeforeViewController:currentWeekDay];
+                [self.weekdayPageViewController setViewControllers:@[newWeekVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+                newWeekVC.selectedIndex = 6;
+            } else if([self.currentDate laterDate:[NSDate dateWithTimeInterval:7*24*60*60 sinceDate:currentWeekDay.startDay]] == self.currentDate){
+                KTGWeekdayHeaderViewController* newWeekVC = (KTGWeekdayHeaderViewController*)[self pageViewController:self.weekdayPageViewController viewControllerAfterViewController:currentWeekDay];
+                [self.weekdayPageViewController setViewControllers:@[newWeekVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+                newWeekVC.selectedIndex = 0;
+            } else {
+                
+            }
+        }
+        
+        if(notification.object != self.dayPageViewController){
+            //update the pager
+            KTGCalendarDayViewController* currentDayVC = self.dayPageViewController.viewControllers[0];
+            //Check for initial condition
+            if(![currentDayVC.date ktg_isSameDay:self.currentDate]){
+                UIPageViewControllerNavigationDirection direction = [currentDayVC.date earlierDate:self.currentDate] == currentDayVC.date ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+                
+                KTGCalendarDayViewController* newDayVC = [[KTGCalendarDayViewController alloc] initWithDate:self.currentDate];
+                [self.dayPageViewController setViewControllers:@[newDayVC] direction:direction animated:YES completion:nil];
+            }
+        }
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark UIPageViewControllerDatasource
@@ -95,16 +157,20 @@
     }
 }
 
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers{
-    if(pageViewController == self.weekdayPageViewController){
-        KTGWeekdayHeaderViewController* currentWeek = pageViewController.viewControllers[0];
-        KTGWeekdayHeaderViewController* nextWeek = pendingViewControllers[0];
-        nextWeek.selectedIndex = currentWeek.selectedIndex;
-        
-        NSDate* dateSelected = [NSDate dateWithTimeInterval:24*60*60*nextWeek.selectedIndex sinceDate:nextWeek.startDay];
-        NSDateFormatter* df = [[NSDateFormatter alloc] init];
-        df.dateFormat = @"EEEE MMMM dd, YYYY";
-        self.currentDateLabel.text = [df stringFromDate:dateSelected];
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
+    if(completed){
+        if(pageViewController == self.weekdayPageViewController){
+            KTGWeekdayHeaderViewController* currentWeek = pageViewController.viewControllers[0];
+            KTGWeekdayHeaderViewController* prevWeek = previousViewControllers[0];
+            
+            NSDate* dateSelected = [NSDate dateWithTimeInterval:24*60*60*prevWeek.selectedIndex sinceDate:currentWeek.startDay];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:self.weekdayPageViewController userInfo:@{KTGSchedulerViewControllerNewDateKey : dateSelected}];
+        } else {
+            KTGCalendarDayViewController* currentDay = pageViewController.viewControllers[0];
+            
+            NSDate* dateSelected = currentDay.date;
+            [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:self.dayPageViewController userInfo:@{KTGSchedulerViewControllerNewDateKey : dateSelected}];
+        }
     }
 }
 
@@ -120,6 +186,10 @@
     self.weekdayPageViewController.doubleSided = NO;
     return UIPageViewControllerSpineLocationMin;
     
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

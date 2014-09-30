@@ -16,4 +16,10 @@
  */
 - (BOOL) ktg_isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 
+/**
+ *  Returns whether the two dates are the same day
+ *
+ *  @return YES if the date is the same day
+ */
+- (BOOL) ktg_isSameDay:(NSDate*)otherDay;
 @end
