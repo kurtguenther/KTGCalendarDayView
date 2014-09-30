@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KTGCalendarDayView.h"
 
 @interface KTGCalendarDayViewController : UIViewController
+
+@property (nonatomic,strong) KTGCalendarDayView* dayView;
 
 @property (nonatomic, strong) NSDate* date;
 

@@ -16,6 +16,7 @@
 @property (nonatomic, strong) IBOutlet UIView* weekdayPageViewControllerContainer;
 @property (nonatomic, strong) IBOutlet UIView* dayViewPageViewControllerContainer;
 @property (nonatomic, strong) IBOutlet UILabel* currentDateLabel;
+@property (nonatomic, strong) IBOutlet UIButton* todayButton;
 
 @property (nonatomic, strong) NSDate* currentDate;
 

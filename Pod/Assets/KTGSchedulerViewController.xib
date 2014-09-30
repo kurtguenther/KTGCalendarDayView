@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="currentDateLabel" destination="1dH-Qj-OsJ" id="vyr-T3-wQN"/>
                 <outlet property="dayViewPageViewControllerContainer" destination="yOO-JZ-vBi" id="fNI-Ku-XxQ"/>
+                <outlet property="todayButton" destination="tuR-oQ-nmE" id="MDs-y9-PYn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="weekdayPageViewControllerContainer" destination="5lX-eD-9h0" id="adx-rR-MDN"/>
             </connections>
@@ -118,23 +119,46 @@
                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yOO-JZ-vBi" userLabel="Day View Controller Container">
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="asb-dJ-Wa0" userLabel="Bottom Bar">
+                    <rect key="frame" x="0.0" y="465" width="320" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tuR-oQ-nmE">
+                            <rect key="frame" x="140" y="6" width="41" height="30"/>
+                            <state key="normal" title="Today">
+                                <color key="titleColor" red="1" green="0.35686274509999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="tuR-oQ-nmE" secondAttribute="centerY" constant="1" id="FHZ-9S-EMG"/>
+                        <constraint firstAttribute="height" constant="44" id="JqW-oD-0ri"/>
+                        <constraint firstAttribute="centerX" secondItem="tuR-oQ-nmE" secondAttribute="centerX" id="bjp-Du-MdU"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.10980392160000001" green="0.56470588239999997" blue="0.85098039219999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="dlg-bF-Z9a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0jm-3z-lSq"/>
                 <constraint firstItem="S3o-A5-CSi" firstAttribute="top" secondItem="5lX-eD-9h0" secondAttribute="bottom" id="A2T-Nh-5TL"/>
                 <constraint firstAttribute="trailing" secondItem="yOO-JZ-vBi" secondAttribute="trailing" id="ERc-Ie-XoH"/>
+                <constraint firstAttribute="centerX" secondItem="asb-dJ-Wa0" secondAttribute="centerX" id="Jah-Hg-9Xb"/>
+                <constraint firstItem="asb-dJ-Wa0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="POF-g1-o8R"/>
                 <constraint firstItem="S3o-A5-CSi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rwo-bw-7kp"/>
+                <constraint firstAttribute="trailing" secondItem="asb-dJ-Wa0" secondAttribute="trailing" id="V5i-Jd-5Vq"/>
                 <constraint firstAttribute="trailing" secondItem="S3o-A5-CSi" secondAttribute="trailing" id="W74-zz-JQK"/>
                 <constraint firstItem="yOO-JZ-vBi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YxN-3T-Ixp"/>
                 <constraint firstItem="yOO-JZ-vBi" firstAttribute="top" secondItem="5lX-eD-9h0" secondAttribute="bottom" id="clM-d9-BsW"/>
                 <constraint firstItem="yOO-JZ-vBi" firstAttribute="top" secondItem="S3o-A5-CSi" secondAttribute="bottom" id="dHt-OH-bnn"/>
                 <constraint firstAttribute="bottom" secondItem="yOO-JZ-vBi" secondAttribute="bottom" id="fpJ-9q-id7"/>
                 <constraint firstItem="dlg-bF-Z9a" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hF1-1u-ZSj"/>
+                <constraint firstItem="asb-dJ-Wa0" firstAttribute="top" secondItem="yOO-JZ-vBi" secondAttribute="bottom" id="hZg-Jk-0aj"/>
                 <constraint firstItem="5lX-eD-9h0" firstAttribute="top" secondItem="dlg-bF-Z9a" secondAttribute="bottom" id="iq6-Lh-aGD"/>
                 <constraint firstItem="5lX-eD-9h0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mhY-c4-7hc"/>
                 <constraint firstAttribute="trailing" secondItem="5lX-eD-9h0" secondAttribute="trailing" id="pw9-vY-FCu"/>
                 <constraint firstAttribute="trailing" secondItem="dlg-bF-Z9a" secondAttribute="trailing" id="two-wn-F40"/>
+                <constraint firstAttribute="bottom" secondItem="asb-dJ-Wa0" secondAttribute="bottom" id="uDS-WJ-ZEp"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -142,6 +166,7 @@
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="clM-d9-BsW"/>
+                    <exclude reference="fpJ-9q-id7"/>
                 </mask>
             </variation>
         </view>

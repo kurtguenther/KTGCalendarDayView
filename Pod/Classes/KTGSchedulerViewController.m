@@ -49,7 +49,6 @@
 
     KTGCalendarDayViewController* todayAgenda = [[KTGCalendarDayViewController alloc] initWithDate:[NSDate date]];
     [self.dayPageViewController setViewControllers:@[todayAgenda] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    todayAgenda.view.backgroundColor = [UIColor greenColor];
 
     
     [self addChildViewController:self.dayPageViewController];
@@ -57,8 +56,9 @@
     [self.dayViewPageViewControllerContainer addSubview:self.dayPageViewController.view];
     [self.dayPageViewController didMoveToParentViewController:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateUpdate:) name:KTGSchedulerViewControllerDateChanged object:nil];
+    [self.todayButton addTarget:self action:@selector(todayClick:) forControlEvents:UIControlEventTouchUpInside];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateUpdate:) name:KTGSchedulerViewControllerDateChanged object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:nil userInfo:@{KTGSchedulerViewControllerNewDateKey : [NSDate date]}];
     
 }
@@ -190,6 +190,14 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark Today
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)todayClick:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:self userInfo:@{KTGSchedulerViewControllerNewDateKey : [NSDate date]}];
 }
 
 

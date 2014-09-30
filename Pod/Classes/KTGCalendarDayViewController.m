@@ -7,12 +7,9 @@
 //
 
 #import "KTGCalendarDayViewController.h"
-#import "KTGCalendarDayView.h"
 #import "Masonry.h"
 
 @interface KTGCalendarDayViewController ()
-
-@property (nonatomic,strong) KTGCalendarDayView* dayView;
 
 @end
 
@@ -31,13 +28,14 @@
 
     self.dayView = [[KTGCalendarDayView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.dayView];
+    self.view.backgroundColor = [UIColor blackColor];
     
-//    [self.view mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.equalTo(self.view.mas_width);
-//        make.width.equalTo(self.view.mas_height);
-//        make.centerX.equalTo(self.view.mas_centerX);
-//        make.centerY.equalTo(self.view.mas_centerY);
-//    }];
+    [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(self.view.mas_width);
+        make.height.equalTo(self.view.mas_height);
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(self.view.mas_centerY);
+    }];
 }
 
 @end

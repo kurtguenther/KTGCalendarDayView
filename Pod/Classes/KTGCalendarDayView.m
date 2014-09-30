@@ -11,6 +11,7 @@
 #import "KTGCalendarEventView.h"
 #import "NSDate+KTG.h"
 #import "KTGCalendarNewEventView.h"
+#import "Masonry.h"
 
 @interface KTGCalendarDayView ()
 
@@ -38,12 +39,18 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-
+        [self addSubview:self.scrollView];
+        
+        [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(self.mas_width);
+            make.height.equalTo(self.mas_height);
+            make.centerX.equalTo(self.mas_centerX);
+            make.centerY.equalTo(self.mas_centerY);
+        }];
+        
         [self addObserver:self forKeyPath:@"hourHeight" options:NSKeyValueObservingOptionNew context:nil];
         
         self.hourHeight = 47.5f;
-        
-        [self addSubview:self.scrollView];
         
         self.hourMarkers = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 24.0 * self.hourHeight)];
         [self.scrollView addSubview:self.hourMarkers];
@@ -83,7 +90,10 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
                        context:(void *)context
 {
     if ([keyPath isEqualToString:@"hourHeight"]) {
-        self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds), 24.0 * self.hourHeight);
+        //HACK - this should be 24, why is it 26?
+        //self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds), 26.0 * self.hourHeight);
+        self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds), 26.0 * self.hourHeight);
+        ;
     }
 }
 
@@ -256,6 +266,10 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         //update the hour markers to show / extra minute markers
     }
 
+}
+
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"hourHeight"];
 }
 
 @end
