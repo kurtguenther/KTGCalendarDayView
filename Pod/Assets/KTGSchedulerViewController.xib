@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KTGSchedulerViewController">
             <connections>
+                <outlet property="currentDateLabel" destination="1dH-Qj-OsJ" id="vyr-T3-wQN"/>
+                <outlet property="dayViewPageViewControllerContainer" destination="yOO-JZ-vBi" id="fNI-Ku-XxQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="weekdayPageViewControllerContainer" destination="5lX-eD-9h0" id="adx-rR-MDN"/>
             </connections>
@@ -96,10 +98,38 @@
                         <constraint firstAttribute="height" constant="40" id="R2z-rL-D9q"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S3o-A5-CSi" userLabel="Date Title Label Area">
+                    <rect key="frame" x="0.0" y="48" width="320" height="46"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1dH-Qj-OsJ">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="30n-XI-Fm0"/>
+                        <constraint firstItem="1dH-Qj-OsJ" firstAttribute="top" secondItem="S3o-A5-CSi" secondAttribute="top" id="Sxp-mX-kx9"/>
+                        <constraint firstAttribute="centerX" secondItem="1dH-Qj-OsJ" secondAttribute="centerX" id="lp4-Ea-vE0"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yOO-JZ-vBi" userLabel="Day View Controller Container">
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.10980392160000001" green="0.56470588239999997" blue="0.85098039219999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="dlg-bF-Z9a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0jm-3z-lSq"/>
+                <constraint firstItem="S3o-A5-CSi" firstAttribute="top" secondItem="5lX-eD-9h0" secondAttribute="bottom" id="A2T-Nh-5TL"/>
+                <constraint firstAttribute="trailing" secondItem="yOO-JZ-vBi" secondAttribute="trailing" id="ERc-Ie-XoH"/>
+                <constraint firstItem="S3o-A5-CSi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rwo-bw-7kp"/>
+                <constraint firstAttribute="trailing" secondItem="S3o-A5-CSi" secondAttribute="trailing" id="W74-zz-JQK"/>
+                <constraint firstItem="yOO-JZ-vBi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YxN-3T-Ixp"/>
+                <constraint firstItem="yOO-JZ-vBi" firstAttribute="top" secondItem="5lX-eD-9h0" secondAttribute="bottom" id="clM-d9-BsW"/>
+                <constraint firstItem="yOO-JZ-vBi" firstAttribute="top" secondItem="S3o-A5-CSi" secondAttribute="bottom" id="dHt-OH-bnn"/>
+                <constraint firstAttribute="bottom" secondItem="yOO-JZ-vBi" secondAttribute="bottom" id="fpJ-9q-id7"/>
                 <constraint firstItem="dlg-bF-Z9a" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hF1-1u-ZSj"/>
                 <constraint firstItem="5lX-eD-9h0" firstAttribute="top" secondItem="dlg-bF-Z9a" secondAttribute="bottom" id="iq6-Lh-aGD"/>
                 <constraint firstItem="5lX-eD-9h0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mhY-c4-7hc"/>
@@ -109,6 +139,11 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="clM-d9-BsW"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>

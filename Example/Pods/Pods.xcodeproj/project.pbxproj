@@ -22,6 +22,7 @@
 		0B4500C2C70D4E1A843AFD06 /* NSArray+MASShorthandAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D7C5CCB5E2BB436FB16572A0 /* NSArray+MASShorthandAdditions.h */; };
 		0B9789CDAF604597AE08F428 /* libPods-Tests-Expecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A21D0A1D9D954428B78F8CBF /* libPods-Tests-Expecta.a */; };
 		0D9B7E1AC0A642C2B52079C3 /* Masonry.h in Headers */ = {isa = PBXBuildFile; fileRef = 905A79D09C8A410B92F35FBB /* Masonry.h */; };
+		0F59C39C19DA7E2B000DBCE0 /* KTGCalendarDayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F59C39B19DA7E2B000DBCE0 /* KTGCalendarDayViewController.m */; };
 		0FFA0A1919DA685100BFAA73 /* KTGWeekdayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FFA0A1819DA685100BFAA73 /* KTGWeekdayHeaderView.m */; };
 		0FFC018929C84968A61015D0 /* EXPMatchers+FBSnapshotTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 01538A016CB747BB8AE5D1AF /* EXPMatchers+FBSnapshotTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		10C83A9C8ECC4D52A2C999F0 /* KTGCalendarEventView.h in Headers */ = {isa = PBXBuildFile; fileRef = 998E37E93DE8477B948B2A4E /* KTGCalendarEventView.h */; };
@@ -327,6 +328,8 @@
 		0A50034A452F40CD94DD8066 /* EXPMatcherHelpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXPMatcherHelpers.m; path = src/matchers/EXPMatcherHelpers.m; sourceTree = "<group>"; };
 		0C64B3AE781C42DF8F4B9DB0 /* MASViewAttribute.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASViewAttribute.m; path = Masonry/MASViewAttribute.m; sourceTree = "<group>"; };
 		0D34676CABBF4703A35BBA91 /* Pods-Tests-EXPMatchers+FBSnapshotTest-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Tests-EXPMatchers+FBSnapshotTest-dummy.m"; sourceTree = "<group>"; };
+		0F59C39A19DA7E2B000DBCE0 /* KTGCalendarDayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KTGCalendarDayViewController.h; path = Pod/Classes/KTGCalendarDayViewController.h; sourceTree = "<group>"; };
+		0F59C39B19DA7E2B000DBCE0 /* KTGCalendarDayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KTGCalendarDayViewController.m; path = Pod/Classes/KTGCalendarDayViewController.m; sourceTree = "<group>"; };
 		0FF62C1350154910BF2EABB6 /* MASViewConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASViewConstraint.m; path = Masonry/MASViewConstraint.m; sourceTree = "<group>"; };
 		0FFA0A1719DA685100BFAA73 /* KTGWeekdayHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KTGWeekdayHeaderView.h; path = Pod/Classes/KTGWeekdayHeaderView.h; sourceTree = "<group>"; };
 		0FFA0A1819DA685100BFAA73 /* KTGWeekdayHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KTGWeekdayHeaderView.m; path = Pod/Classes/KTGWeekdayHeaderView.m; sourceTree = "<group>"; };
@@ -647,6 +650,8 @@
 				550912A23DFD43729D888CF0 /* Support Files */,
 				0FFA0A1719DA685100BFAA73 /* KTGWeekdayHeaderView.h */,
 				0FFA0A1819DA685100BFAA73 /* KTGWeekdayHeaderView.m */,
+				0F59C39A19DA7E2B000DBCE0 /* KTGCalendarDayViewController.h */,
+				0F59C39B19DA7E2B000DBCE0 /* KTGCalendarDayViewController.m */,
 			);
 			name = KTGCalendarDayView;
 			path = ../..;
@@ -1548,6 +1553,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F59C39C19DA7E2B000DBCE0 /* KTGCalendarDayViewController.m in Sources */,
 				D9194287C2794915B02245A6 /* Pods-KTGCalendarDayView-dummy.m in Sources */,
 				0FFA0A1919DA685100BFAA73 /* KTGWeekdayHeaderView.m in Sources */,
 			);
