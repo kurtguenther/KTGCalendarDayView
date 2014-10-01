@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KTGCalendarDayView.h"
 
 #define KTGSchedulerViewControllerDateChanged @"KTGSchedulerViewControllerDateChanged"
 #define KTGSchedulerViewControllerNewDateKey @"KTGSchedulerViewControllerNewDateKey"
@@ -19,5 +20,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* todayButton;
 
 @property (nonatomic, strong) NSDate* currentDate;
+
+@property (nonatomic, strong) id<KTGCalendarDayViewDataSource> datasource;
 
 @end

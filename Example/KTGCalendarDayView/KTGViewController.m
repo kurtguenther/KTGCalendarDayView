@@ -9,11 +9,9 @@
 #import "KTGViewController.h"
 #import "KTGExampleEvent.h"
 #import <EventKit/EventKit.h>
+#import <KTGCalendarDayView/NSDate+KTG.h>
 
 @interface KTGViewController ()
-
-@property (nonatomic, strong) KTGCalendarDayView* dayView;
-@property (nonatomic, strong) NSDate* currentDate;
 
 @property (nonatomic, strong) NSArray* exampleEvents;
 
@@ -26,21 +24,12 @@
 {
     [super viewDidLoad];
     
-    self.currentDate = [NSDate date];
-    
-    NSDateFormatter* df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"EEEE MMMM dd, YYYY";
-    self.title = [df stringFromDate:self.currentDate];
-    
-    self.dayView = [[KTGCalendarDayView alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:self.dayView];
-    
     NSMutableArray* retVal = [NSMutableArray array];
     
     self.exampleEvents = retVal;
     
-    self.dayView.delegate = self;
-    self.dayView.dataSource = self;
+//    self.dayView.delegate = self;
+//    self.dayView.dataSource = self;
     
     [[EKEventStore alloc] requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
         if(!granted){
@@ -52,20 +41,12 @@
 }
 
 - (void)fetchLocalEvents {
-
-    NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
-    comps.hour = 0;
-    comps.minute = 0;
-    
-    NSDate* begin = [[NSCalendar currentCalendar] dateFromComponents:comps];
-    
-    comps.hour = 23;
-    comps.minute = 59;
-    
-    NSDate* end = [[NSCalendar currentCalendar] dateFromComponents:comps];
-
     EKEventStore* store = [[EKEventStore alloc] init];
-    NSArray* calendarEvents = [store eventsMatchingPredicate:[store predicateForEventsWithStartDate:begin endDate:end calendars:nil]];
+    const double secondsInAYear = (60.0*60.0*24.0)*365.0;
+    NSPredicate* predicate = [store predicateForEventsWithStartDate:[NSDate dateWithTimeIntervalSinceNow:-secondsInAYear] endDate:[NSDate dateWithTimeIntervalSinceNow:secondsInAYear] calendars:nil];
+  
+    NSArray* calendarEvents = [store eventsMatchingPredicate:predicate];
+    
     
     if(calendarEvents.count == 0){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -89,8 +70,10 @@
     
     //Must be called on the main thread
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.dayView reloadData];
-        [self.dayView scrollToEvent:[self.exampleEvents firstObject] position:UITableViewScrollPositionMiddle animated:YES];
+        self.currentDate = nil;
+        self.currentDate = [NSDate date];
+//        [self.dayView reloadData];
+//        [self.dayView scrollToEvent:[self.exampleEvents firstObject] position:UITableViewScrollPositionMiddle animated:YES];
     });
 
 }
@@ -99,16 +82,17 @@
 #pragma mark KTGCalendarDayViewDataSource
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (NSArray *)events {
-    return self.exampleEvents;
+- (NSArray *)eventsForDayView:(KTGCalendarDayView*) dayView {
+    NSArray* retVal = [self.exampleEvents filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        id<KTGCalendarEvent> ev = evaluatedObject;
+        return [ev.startTime ktg_isSameDay:dayView.date] || [ev.endTime ktg_isSameDay:dayView.date];
+    }]];
+    NSLog(@"Returning %d dates for %@", retVal.count, dayView.date);
+    return retVal;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark KTGCalendarDayViewDelegate
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-- (UIView *)calendarDayView:(KTGCalendarDayView *)calendarDayView eventViewForEvent:(id<KTGCalendarEvent>)event{
-    return nil;
+- (id<KTGCalendarDayViewDataSource>)datasource {
+    return self;
 }
 
 @end

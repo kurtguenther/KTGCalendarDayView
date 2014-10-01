@@ -20,6 +20,10 @@
 
 @implementation KTGSchedulerViewController
 
+- (instancetype)init {
+    return [self initWithNibName:@"KTGSchedulerViewController" bundle:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -88,7 +92,6 @@
         
         NSLog(@"Updated master date from source:%@", notification.object);
         
-        //TODO update the pagers
         if(notification.object != self.weekdayPageViewController && ![notification.object isKindOfClass:[KTGWeekdayHeaderViewController class]]){
             //update the weekday pager
             //update the pager
@@ -107,14 +110,23 @@
         }
         
         if(notification.object != self.dayPageViewController){
-            //update the pager
+            //update the DAY
             KTGCalendarDayViewController* currentDayVC = self.dayPageViewController.viewControllers[0];
             //Check for initial condition
             if(![currentDayVC.date ktg_isSameDay:self.currentDate]){
                 UIPageViewControllerNavigationDirection direction = [currentDayVC.date earlierDate:self.currentDate] == currentDayVC.date ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
                 
                 KTGCalendarDayViewController* newDayVC = [[KTGCalendarDayViewController alloc] initWithDate:self.currentDate];
-                [self.dayPageViewController setViewControllers:@[newDayVC] direction:direction animated:YES completion:nil];
+                newDayVC.dataSource = self.datasource;
+                newDayVC.date = self.currentDate;
+                KTGCalendarDayViewController* prevDayVC = self.dayPageViewController.viewControllers[0];
+
+                //So that we carry over the original offset
+                newDayVC.initOffset = prevDayVC.dayView.scrollView.contentOffset;
+                
+                [self.dayPageViewController setViewControllers:@[newDayVC] direction:direction animated:YES completion:^(BOOL finished) {
+                    [newDayVC.dayView scrollToLogicalPoint];
+                }];
             }
         }
     }
@@ -133,11 +145,13 @@
         KTGWeekdayHeaderViewController* header = [[KTGWeekdayHeaderViewController alloc] initWithStartDay:newDay];
         return header;
     } else {
-        NSDate* oldDay = ((KTGCalendarDayViewController*)viewController).date;
+        KTGCalendarDayViewController* oldVC = ((KTGCalendarDayViewController*)viewController);
+        NSDate* oldDay = oldVC.date;
         NSDate* newDay = [NSDate dateWithTimeInterval:-1*24*60*60 sinceDate:oldDay];
-        KTGCalendarDayViewController* header = [[KTGCalendarDayViewController alloc] initWithDate:newDay];
-        header.view.backgroundColor = [UIColor blueColor];
-        return header;
+        KTGCalendarDayViewController* dayViewVC = [[KTGCalendarDayViewController alloc] initWithDate:newDay];
+        dayViewVC.dataSource = self.datasource;
+        dayViewVC.date = newDay;
+        return dayViewVC;
     }
 }
 
@@ -149,11 +163,13 @@
         KTGWeekdayHeaderViewController* header = [[KTGWeekdayHeaderViewController alloc] initWithStartDay:newDay];
         return header;
     } else {
-        NSDate* oldDay = ((KTGCalendarDayViewController*)viewController).date;
+        KTGCalendarDayViewController* oldVC = ((KTGCalendarDayViewController*)viewController);
+        NSDate* oldDay = oldVC.date;
         NSDate* newDay = [NSDate dateWithTimeInterval:1*24*60*60 sinceDate:oldDay];
-        KTGCalendarDayViewController* header = [[KTGCalendarDayViewController alloc] initWithDate:newDay];
-        header.view.backgroundColor = [UIColor whiteColor];
-        return header;
+        KTGCalendarDayViewController* dayViewVC = [[KTGCalendarDayViewController alloc] initWithDate:newDay];
+        dayViewVC.dataSource = self.datasource;
+        dayViewVC.date = newDay;
+        return dayViewVC;
     }
 }
 
@@ -168,9 +184,20 @@
         } else {
             KTGCalendarDayViewController* currentDay = pageViewController.viewControllers[0];
             
+            [currentDay.dayView scrollToLogicalPoint];
+            
             NSDate* dateSelected = currentDay.date;
             [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:self.dayPageViewController userInfo:@{KTGSchedulerViewControllerNewDateKey : dateSelected}];
+            
         }
+    }
+}
+
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers {
+    if(pageViewController == self.dayPageViewController){
+        KTGCalendarDayViewController* currentVC = pageViewController.viewControllers[0];
+        KTGCalendarDayViewController* newVC = pendingViewControllers[0];
+        [newVC.dayView.scrollView setContentOffset:currentVC.dayView.scrollView.contentOffset animated:NO];
     }
 }
 

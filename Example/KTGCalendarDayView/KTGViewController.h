@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <KTGCalendarDayView/KTGSchedulerViewController.h>
 #import <KTGCalendarDayView/KTGCalendarDayView.h>
 
-@interface KTGViewController : UIViewController <KTGCalendarDayViewDelegate, KTGCalendarDayViewDataSource>
+@interface KTGViewController : KTGSchedulerViewController <KTGCalendarDayViewDataSource>
 
 -(void)fetchLocalEvents;
 

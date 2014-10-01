@@ -12,6 +12,8 @@
 @interface KTGCalendarDayViewController : UIViewController
 
 @property (nonatomic,strong) KTGCalendarDayView* dayView;
+@property (nonatomic, strong) id<KTGCalendarDayViewDataSource> dataSource;
+@property (nonatomic) CGPoint initOffset;
 
 @property (nonatomic, strong) NSDate* date;
 

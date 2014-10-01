@@ -22,8 +22,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    self.rootViewController = [[KTGViewController alloc] init];
-    self.rootViewController = [[KTGSchedulerViewController alloc] init];
+    self.rootViewController = [[KTGViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
     navigationController.navigationBar.translucent = NO;
     

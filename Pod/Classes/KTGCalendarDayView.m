@@ -123,7 +123,7 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
     
     self.viewEventDictionary = [NSMutableDictionary dictionary];
     
-    NSArray* events = [self.dataSource events];
+    NSArray* events = [self.dataSource eventsForDayView:self];
     events = [events sortedArrayUsingComparator:^NSComparisonResult(id<KTGCalendarEvent> obj1, id<KTGCalendarEvent> obj2) {
         return [obj1.startTime compare: obj2.startTime];
     }];
@@ -135,7 +135,7 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
         CGFloat startHeight = [self convertStartTimeToHeight:event.startTime];
         CGFloat endHeight = [self convertEndTimeToHeight:event.endTime];
         
-        CGFloat calculatedLeft = 40.f + 1.f;
+        CGFloat calculatedLeft = 50.f + 1.f;
         CGFloat calculatedWidth = CGRectGetWidth(self.bounds) - calculatedLeft - 1.f;
         
         //TODO really need to bulletproof this.
@@ -216,6 +216,21 @@ typedef NS_ENUM(NSInteger, KTGEventConflict) {
     
     UIView* retVal = [[KTGCalendarNewEventView alloc] initWithFrame:CGRectMake(left, top, width, height)];
     return retVal;
+}
+
+- (void) scrollToLogicalPoint {
+    NSArray* events = [self.dataSource eventsForDayView:self];
+    NSArray* sorted = [events sortedArrayUsingComparator:^NSComparisonResult(id<KTGCalendarEvent> obj1, id<KTGCalendarEvent> obj2) {
+        return [obj1.startTime compare:obj2.startTime];
+    }];
+    
+    if(sorted.count > 0){
+        id<KTGCalendarEvent> first = [sorted firstObject];
+        CGFloat firstOffset = [self convertStartTimeToHeight:first.startTime];
+        if(self.scrollView.contentOffset.y < firstOffset){
+            [self scrollToEvent:[sorted firstObject] position:UITableViewScrollPositionMiddle animated:YES];
+        }
+    }
 }
 
 

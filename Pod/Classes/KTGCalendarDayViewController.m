@@ -19,6 +19,7 @@
     self = [super init];
     if(self){
         self.date = date;
+        self.initOffset = CGPointMake(-1, -1);
     }
     return self;
 }
@@ -27,6 +28,8 @@
     [super viewDidLoad];
 
     self.dayView = [[KTGCalendarDayView alloc] initWithFrame:self.view.bounds];
+    self.dayView.date = self.date;
+    self.dayView.dataSource = self.dataSource;
     [self.view addSubview:self.dayView];
     self.view.backgroundColor = [UIColor blackColor];
     
@@ -36,6 +39,10 @@
         make.centerX.equalTo(self.view.mas_centerX);
         make.centerY.equalTo(self.view.mas_centerY);
     }];
+    
+    if(self.initOffset.y >= 0){
+        self.dayView.scrollView.contentOffset = self.initOffset;
+    }
 }
 
 @end

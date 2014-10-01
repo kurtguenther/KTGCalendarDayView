@@ -19,8 +19,8 @@
 
 @protocol KTGCalendarDayViewDataSource <NSObject>
 @required
--(NSArray*)events;
-- (UIView*)calendarDayView:(KTGCalendarDayView*)calendarDayView eventViewForEvent:(id<KTGCalendarEvent>)event;
+- (NSArray *)eventsForDayView:(KTGCalendarDayView*) dayView;
+//- (UIView*)calendarDayView:(KTGCalendarDayView*)calendarDayView eventViewForEvent:(id<KTGCalendarEvent>)event;
 @end
 
 
@@ -35,9 +35,15 @@
 @property (nonatomic, strong) id<KTGCalendarDayViewDataSource> dataSource;
 @property (nonatomic, strong) id<KTGCalendarDayViewDelegate> delegate;
 
+@property (nonatomic, strong) NSDate* date;
+
 -(void)reloadData;
 
 -(void)scrollToTime:(NSDate*)time position:(UITableViewScrollPosition)position animated:(BOOL)animated;
 -(void)scrollToEvent:(id<KTGCalendarEvent>)event position:(UITableViewScrollPosition)position animated:(BOOL)animated;
+
+//TODO this should be more robust in logic
+//And define this
+-(void)scrollToLogicalPoint;
 
 @end
