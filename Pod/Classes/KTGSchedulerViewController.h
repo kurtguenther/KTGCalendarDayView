@@ -23,4 +23,6 @@
 
 @property (nonatomic, strong) id<KTGCalendarDayViewDataSource> datasource;
 
+-(void)reloadCurrentDay;
+
 @end

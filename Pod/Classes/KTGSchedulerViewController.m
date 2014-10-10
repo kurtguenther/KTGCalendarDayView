@@ -227,5 +227,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:KTGSchedulerViewControllerDateChanged object:self userInfo:@{KTGSchedulerViewControllerNewDateKey : [NSDate date]}];
 }
 
+- (void)reloadCurrentDay{
+    KTGCalendarDayViewController* dvc = self.dayPageViewController.viewControllers[0];
+    [dvc.dayView reloadData];
+}
 
 @end

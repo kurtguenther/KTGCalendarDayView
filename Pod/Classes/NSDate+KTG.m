@@ -22,10 +22,11 @@
 }
 
 - (BOOL)ktg_isSameDay:(NSDate *)otherDay {
-    NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitWeekday) fromDate:self];
-    NSDateComponents* other = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitWeekday) fromDate:otherDay];
+    NSDateComponents* comps = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitDay | NSCalendarUnitMonth) fromDate:self];
+    NSDateComponents* other = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitDay | NSCalendarUnitMonth) fromDate:otherDay];
     
-    return comps.day == other.day && comps.year == other.year && comps.month == other.month;
+    BOOL retVal = comps.day == other.day && comps.year == other.year && comps.month == other.month;
+    return retVal;
 }
 
 
